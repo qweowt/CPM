@@ -16,12 +16,14 @@ namespace CPM
         public int R, G, B = 0;
         Bitmap white = new Bitmap(640, 480);
 
+        public bool videoStart = false;
+
         public Form1()
         {
             InitializeComponent();
             for (int i = 0; i < paint.Width; i++)
                 for (int j = 0; j < paint.Height; j++)
-                        paint.SetPixel(i, j, Color.FromArgb(255, 255, 255, 255));
+                    paint.SetPixel(i, j, Color.FromArgb(255, 255, 255, 255));
         }
 
         private void FrameRead(Mat captureFrame)
@@ -43,27 +45,49 @@ namespace CPM
 
         private void OnOffBtn_Click(object sender, EventArgs e)
         {
-            if (camIsOn == false)
+            if (videoStart)
             {
-                videoCapture = new VideoCapture(0);
-                framtick.Start();
-                camIsOn = true;
-                OnOffBtn.Text = "Disable camera";
-            }
-            else
-            {
-                framtick.Stop();
-                
+                videoStart = false;
                 VideoPB.Image = white;
                 DrawPB.Image = white;
-                camIsOn = false;
-                OnOffBtn.Text = "Enable Camera";
+                framtick.Stop();
+                Clearr();
             }
+
+
+            if (camIsOn == false)
+                CaptureOn();
+            else
+                CaptureOff();
+        }
+
+        public void CaptureOff()
+        {
+            framtick.Stop();
+            VideoPB.Image = white;
+            DrawPB.Image = white;
+            Clearr();
+            camIsOn = false;
+            OnOffBtn.Text = "Enable Camera";
+        }
+
+        public void CaptureOn()
+        {
+            videoCapture = new VideoCapture(0);
+            framtick.Start();
+            camIsOn = true;
+            OnOffBtn.Text = "Disable camera";
         }
 
         private void framtick_Tick(object sender, EventArgs e)
         {
-            if(camIsOn == true)
+            if (camIsOn == true)
+            {
+                videoCapture.Read(captureFrame);
+                VideoPB.Image = BitmapConverter.ToBitmap(captureFrame);
+                FrameRead(captureFrame);
+            }
+            else if(videoStart == true)
             {
                 videoCapture.Read(captureFrame);
                 VideoPB.Image = BitmapConverter.ToBitmap(captureFrame);
@@ -80,7 +104,15 @@ namespace CPM
 
         private void Clear_Click(object sender, EventArgs e)
         {
+            Clearr();
+        }
+
+        private void Clearr()
+        {
             DrawPB.Image = white;
+            for (int i = 0; i < paint.Width; i++)
+                for (int j = 0; j < paint.Height; j++)
+                    paint.SetPixel(i, j, Color.FromArgb(255, 255, 255, 255));
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -98,6 +130,40 @@ namespace CPM
                     MessageBox.Show("Impossible to save image", "FATAL ERROR",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void Open_Click(object sender, EventArgs e)
+        {
+            if (camIsOn)
+                CaptureOff();
+
+            if(videoStart == false)
+            {
+                string FilePath = "";
+                OpenFileDialog choofdlog = new OpenFileDialog();
+                choofdlog.Filter = "All Files (*.*)|*.*";
+                choofdlog.FilterIndex = 1;
+                choofdlog.Multiselect = false;
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        FilePath = openFileDialog1.FileName;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Error");
+                    }
+                }
+                videoCapture = new VideoCapture(FilePath);
+                videoStart = true;
+                framtick.Start();
+            }
+            else
+            {
+                videoStart = false;
+                framtick.Stop();
             }
         }
     }

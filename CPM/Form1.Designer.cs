@@ -41,6 +41,7 @@
             Save = new Button();
             saveFileDialog1 = new SaveFileDialog();
             Open = new Button();
+            openFileDialog1 = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)VideoPB).BeginInit();
             ((System.ComponentModel.ISupportInitialize)DrawPB).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numR).BeginInit();
@@ -144,6 +145,11 @@
             Open.TabIndex = 9;
             Open.Text = "Open";
             Open.UseVisualStyleBackColor = true;
+            Open.Click += Open_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -184,5 +190,6 @@
         private Button Save;
         private SaveFileDialog saveFileDialog1;
         private Button Open;
+        private OpenFileDialog openFileDialog1;
     }
 }

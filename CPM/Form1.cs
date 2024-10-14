@@ -2,6 +2,7 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using OpenCvSharp.XPhoto;
 using System.Data;
+using System.IO;
 
 
 namespace CPM
@@ -18,6 +19,9 @@ namespace CPM
         public Form1()
         {
             InitializeComponent();
+            for (int i = 0; i < paint.Width; i++)
+                for (int j = 0; j < paint.Height; j++)
+                        paint.SetPixel(i, j, Color.FromArgb(255, 255, 255, 255));
         }
 
         private void FrameRead(Mat captureFrame)
@@ -34,7 +38,6 @@ namespace CPM
                     if (threshBitmap.GetPixel(i, j) == Color.FromArgb(255, 255, 255, 255))
                         paint.SetPixel(i, j, Color.FromArgb(255, R, G, B));
 
-
             DrawPB.Image = paint;
         }
 
@@ -50,8 +53,7 @@ namespace CPM
             else
             {
                 framtick.Stop();
-                videoCapture?.Dispose();
-                captureFrame?.Dispose();
+                
                 VideoPB.Image = white;
                 DrawPB.Image = white;
                 camIsOn = false;
@@ -61,9 +63,12 @@ namespace CPM
 
         private void framtick_Tick(object sender, EventArgs e)
         {
-            videoCapture.Read(captureFrame);
-            VideoPB.Image = BitmapConverter.ToBitmap(captureFrame);
-            FrameRead(captureFrame);
+            if(camIsOn == true)
+            {
+                videoCapture.Read(captureFrame);
+                VideoPB.Image = BitmapConverter.ToBitmap(captureFrame);
+                FrameRead(captureFrame);
+            }
         }
 
         private void SetColor_Click(object sender, EventArgs e)

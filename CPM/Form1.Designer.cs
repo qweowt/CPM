@@ -40,6 +40,7 @@
             Clear = new Button();
             Save = new Button();
             saveFileDialog1 = new SaveFileDialog();
+            Open = new Button();
             ((System.ComponentModel.ISupportInitialize)VideoPB).BeginInit();
             ((System.ComponentModel.ISupportInitialize)DrawPB).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numR).BeginInit();
@@ -83,7 +84,7 @@
             // 
             // numR
             // 
-            numR.Location = new Point(93, 503);
+            numR.Location = new Point(174, 503);
             numR.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numR.Name = "numR";
             numR.Size = new Size(56, 23);
@@ -91,7 +92,7 @@
             // 
             // numG
             // 
-            numG.Location = new Point(155, 503);
+            numG.Location = new Point(236, 503);
             numG.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numG.Name = "numG";
             numG.Size = new Size(56, 23);
@@ -99,7 +100,7 @@
             // 
             // numB
             // 
-            numB.Location = new Point(217, 503);
+            numB.Location = new Point(298, 503);
             numB.Maximum = new decimal(new int[] { 255, 0, 0, 0 });
             numB.Name = "numB";
             numB.Size = new Size(56, 23);
@@ -107,7 +108,7 @@
             // 
             // SetColor
             // 
-            SetColor.Location = new Point(279, 503);
+            SetColor.Location = new Point(360, 503);
             SetColor.Name = "SetColor";
             SetColor.Size = new Size(75, 23);
             SetColor.TabIndex = 6;
@@ -135,11 +136,21 @@
             Save.UseVisualStyleBackColor = true;
             Save.Click += Save_Click;
             // 
+            // Open
+            // 
+            Open.Location = new Point(93, 503);
+            Open.Name = "Open";
+            Open.Size = new Size(75, 23);
+            Open.TabIndex = 9;
+            Open.Text = "Open";
+            Open.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1306, 538);
+            Controls.Add(Open);
             Controls.Add(Save);
             Controls.Add(Clear);
             Controls.Add(SetColor);
@@ -172,5 +183,6 @@
         private Button Clear;
         private Button Save;
         private SaveFileDialog saveFileDialog1;
+        private Button Open;
     }
 }
